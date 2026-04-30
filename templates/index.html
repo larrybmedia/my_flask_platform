@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - My Platform{% endblock %}
+
+{% block content %}
+<div class="dashboard container py-4">
+    <div class="text-center mb-5">
+        <h1 class="display-5 fw-bold">Welcome, {{ user }}!</h1>
+        
+        <!-- Search Bar: Integrated with Bootstrap -->
+        <form action="/" method="GET" class="d-flex justify-content-center mt-3">
+            <input type="text" name="search" class="form-control w-50 me-2" placeholder="Search posts...">
+            <button type="submit" class="btn btn-outline-secondary">Search</button>
+            <a href="/" class="btn btn-link">Clear</a>
+        </form>
+    </div>
+
+    <!-- 1. The Input Form -->
+    <div class="card shadow-sm border-0 mx-auto" style="max-width: 600px; background: #f8f9fa;">
+        <div class="card-body p-4">
+            <h5 class="card-title mb-3">Post an Update:</h5>
+            <form action="/submit" method="POST">
+                <div class="mb-3">
+                    <input type="text" name="author_name" class="form-control form-control-sm w-50" placeholder="Your Name" required>
+                </div>
+                <div class="input-group">
+                    <input type="text" name="user_input" class="form-control" placeholder="What's on your mind?" required>
+                    <button type="submit" class="btn btn-primary">Post</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <hr class="my-5">
+
+    <!-- 2. The Dynamic Feed -->
+    <div class="feed-container mx-auto" style="max-width: 600px;">
+        <h3 class="mb-4 text-secondary">Your Feed:</h3>
+        
+        {% for post in feed %}
+            <div class="card mb-3 shadow-sm border-0">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <!-- Link to Profile Feature -->
+                            <a href="/profile/{{ post.author }}" class="text-decoration-none text-primary fw-bold">
+                                @{{ post.author }}
+                            </a>
+                            <p class="mt-2 mb-1 fs-5 text-dark">{{ post.content }}</p>
+                            
+                            <!-- Improved Timestamp Feature -->
+                            <small class="text-muted d-block">
+                                {{ post.date_posted.strftime('%b %d, %Y at %H:%M') if post.date_posted else "Just now" }}
+                            </small>
+                        </div>
+
+                        <!-- Action Buttons: Edit and Delete -->
+                        <div class="btn-group">
+                            <a href="/edit/{{ post.id }}" class="btn btn-sm btn-outline-primary px-2 py-1">Edit</a>
+                            <a href="/delete/{{ post.id }}" 
+                               class="btn btn-sm btn-outline-danger px-2 py-1"
+                               onclick="return confirm('Delete this post permanently?')">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="text-center py-5">
+                <p class="text-muted fs-5 italic">No posts yet. Start the conversation!</p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
