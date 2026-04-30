@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Post - My Platform{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow border-0">
+                <div class="card-body p-4">
+                    <h2 class="mb-4 text-center">Edit Your Post</h2>
+                    
+                    <form action="/edit/{{ post.id }}" method="POST">
+                        <div class="mb-3">
+                            <label class="form-label text-muted small">Original Author: <strong>{{ post.author }}</strong></label>
+                            <textarea name="user_input" class="form-control" rows="4" required>{{ post.content }}</textarea>
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Update Post</button>
+                            <a href="{{ url_for('home') }}" class="btn btn-outline-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
